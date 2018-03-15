@@ -145,9 +145,14 @@ class Header extends React.Component {
     _toggleLock(e) {
         e.preventDefault();
         if (WalletDb.isLocked()) {
-            WalletUnlockActions.unlock().then(() => {
-                AccountActions.tryToSetCurrentAccount();
-            });
+            WalletUnlockActions.unlock()
+                .then(() => {
+                    AccountActions.tryToSetCurrentAccount();
+                })
+                .catch(params => {
+                    // Catch Cancel
+                    console.log("is canceled", params.isCanceled);
+                });
         } else {
             WalletUnlockActions.lock();
         }
